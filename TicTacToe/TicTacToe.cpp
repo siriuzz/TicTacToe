@@ -2,6 +2,7 @@
 //
 
 #include <iostream>
+#include <cstdlib> 
 using namespace std;
 
 char tablero[3][3] = { {'1','2','3'},{'4','5','6'},{'7','8','9'} };
@@ -25,7 +26,7 @@ void DesplegarTablero() {
 bool JuegoBloqueado() {
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            if (tablero[i][j] != '0' && tablero[i][j] != 'X') {
+            if (tablero[i][j] != 'O' && tablero[i][j] != 'X') {
                 return false;
             }
         }
@@ -69,21 +70,33 @@ void Jugada(char playerChar, int position) {
 
 int main()
 {
-    char playerChar = 'O';
+    char jugadorChar = 'O';
     int position;
+    string jugador1_Name, jugador2_Name, currJugador;
+
     cout << "Bienvenido al juego Tic Tac Toe!" << endl;
+    cout << "Inserte el nombre del jugador 1: ";
+    cin >> jugador1_Name;
+
+    cout << "Inserte el nombre del jugador 2: ";
+    cin >> jugador2_Name;
+
+    currJugador = jugador1_Name;
+
+    system("CLS");
 
     while (true) {
         DesplegarTablero();
 
+
+        cout << "Turno de " << currJugador << "(" << jugadorChar << "): ";
         cin >> position;
 
-        Jugada(playerChar, position);
+        Jugada(jugadorChar, position);
 
-
-        if (GameOver(playerChar)) {
+        if (GameOver(jugadorChar)) {
             DesplegarTablero();
-            cout << "El jugador de las " << playerChar << " es el ganador!" << endl;
+            cout << "El jugador de las " << jugadorChar << " es el ganador!" << endl;
             break;
         }
 
@@ -94,11 +107,14 @@ int main()
             break;
         }
 
-        if (playerChar == 'O') playerChar = 'X';
-        else if (playerChar == 'X') playerChar = 'O';
+        if (jugadorChar == 'O') jugadorChar = 'X';
+        else jugadorChar = 'O';
 
+        if (currJugador == jugador1_Name) currJugador = jugador2_Name;
+        else currJugador = jugador1_Name;
 
     }
 
 }
+
 
