@@ -69,18 +69,21 @@ bool GameOver(char playerChar) {
     return false;
 }
 
-void Jugada(char playerChar, int position) {
+bool Jugada(char playerChar, int position) {
     int counter = 1;
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            if (counter == position) {
-                tablero[i][j] = playerChar;
-                return;
 
+            if (counter == position) {
+                if (tablero[i][j] == 'O' || tablero[i][j] == 'X') {
+                    return false;
+                }
+                tablero[i][j] = playerChar;
             }
             counter++;
         }
     }
+    return true;
 }
 
 int main()
@@ -136,7 +139,12 @@ int main()
             continue;
         }
 
-        Jugada(jugadorChar, stoi(position));
+        bool jugadaValida = Jugada(jugadorChar, stoi(position));
+        if (!jugadaValida) {
+            cout << "Posicion ya ocupada (jugada invalida)" << endl;
+            system("PAUSE");
+            continue;
+        }
 
         if (GameOver(jugadorChar)) {
             system("CLS");
