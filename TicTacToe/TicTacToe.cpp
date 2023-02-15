@@ -3,10 +3,25 @@
 
 #include <iostream>
 #include <cstdlib> 
+#include <string>
 using namespace std;
 
 char tablero[3][3] = { {'1','2','3'},{'4','5','6'},{'7','8','9'} };
 bool turno = true;
+
+bool ValidarNumero(string str)// metodo para comprobar si el dato introducido es entero
+{
+    int i = 0;
+    while (str[i] != '\0') //'\0' es el character que marca el final del string
+    {
+        if (isdigit(str[i]) == false) // compara cada caracter de la cadena para saber si es numerico
+        {
+            return false;
+        }
+        i++;
+    }
+    return true;
+}
 
 void DesplegarTablero() {
 
@@ -71,8 +86,7 @@ void Jugada(char playerChar, int position) {
 int main()
 {
     char jugadorChar = 'O';
-    int position;
-    string jugador1_Name, jugador2_Name, currJugador;
+    string jugador1_Name, jugador2_Name, currJugador, position, seleccionXO;
 
     cout << "Bienvenido al juego Tic Tac Toe!" << endl;
     cout << "Inserte el nombre del jugador 1: ";
@@ -83,24 +97,58 @@ int main()
 
     currJugador = jugador1_Name;
 
-    system("CLS");
+    while (true) {
+        cout << "Seleccione el caracter que utilizara el jugador 1\n(1) \"O\"\n(2) \"X\"\n>>";
+        cin >> seleccionXO;
+
+        if (!ValidarNumero(seleccionXO)) {
+            cout << "Opcion invalida, inserte 1 para O y 2 para X" << endl;
+            continue;
+        }
+        else if (stoi(seleccionXO) < 1 || stoi(seleccionXO) > 2)  {
+            cout << "Opcion fuera de rango, intente de nuevo" << endl;
+            continue;
+        }
+        break;
+    }
+
+    if (seleccionXO == "1") jugadorChar = 'O';
+    else jugadorChar = 'X';
+
 
     while (true) {
+        system("CLS");
         DesplegarTablero();
-
 
         cout << "Turno de " << currJugador << "(" << jugadorChar << "): ";
         cin >> position;
 
-        Jugada(jugadorChar, position);
+        if (ValidarNumero(position) == false) {
+            cout << "Posicion invalida, solo se permiten numeros, intente de nuevo" << endl;
+            system("PAUSE");
+
+            continue;
+        }
+        else if (stoi(position) > 9) {
+            cout << "Posicion invalida, solo se permiten numeros del 1 al 9, intente de nuevo" << endl;
+            system("PAUSE");
+
+            continue;
+        }
+
+        Jugada(jugadorChar, stoi(position));
 
         if (GameOver(jugadorChar)) {
+            system("CLS");
+
             DesplegarTablero();
-            cout << "El jugador de las " << jugadorChar << " es el ganador!" << endl;
+            cout << currJugador << " es el ganador!" << endl;
             break;
         }
 
         if (JuegoBloqueado()) {
+            system("CLS");
+
             DesplegarTablero();
 
             cout << "El juego es un empate (no mas jugadas validas)" << endl;
