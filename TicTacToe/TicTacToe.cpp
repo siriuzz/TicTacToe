@@ -38,7 +38,7 @@ void DesplegarTablero() {
     }
 }
 
-bool JuegoBloqueado() {
+bool Empate() {
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             if (tablero[i][j] != 'O' && tablero[i][j] != 'X') {
@@ -75,9 +75,7 @@ bool Jugada(char playerChar, int position) {
         for (int j = 0; j < 3; j++) {
 
             if (counter == position) {
-                if (tablero[i][j] == 'O' || tablero[i][j] == 'X') {
-                    return false;
-                }
+                if (tablero[i][j] == 'O' || tablero[i][j] == 'X') return false;
                 tablero[i][j] = playerChar;
             }
             counter++;
@@ -126,14 +124,14 @@ int main()
         cout << "Turno de " << currJugador << "(" << jugadorChar << "): ";
         cin >> position;
 
-        if (ValidarNumero(position) == false) {
+        if (!ValidarNumero(position)) {
             cout << "Posicion invalida, solo se permiten numeros, intente de nuevo" << endl;
             system("PAUSE");
 
             continue;
         }
         else if (stoi(position) > 9) {
-            cout << "Posicion invalida, solo se permiten numeros del 1 al 9, intente de nuevo" << endl;
+            cout << "Posicion fuera de rango, solo se permiten numeros del 1 al 9, intente de nuevo" << endl;
             system("PAUSE");
 
             continue;
@@ -154,11 +152,10 @@ int main()
             break;
         }
 
-        if (JuegoBloqueado()) {
+        if (Empate()) {
             system("CLS");
-
+            
             DesplegarTablero();
-
             cout << "El juego es un empate (no mas jugadas validas)" << endl;
             break;
         }
