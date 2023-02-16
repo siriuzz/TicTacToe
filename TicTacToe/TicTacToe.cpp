@@ -6,8 +6,8 @@
 #include <string>
 using namespace std;
 
-char tablero[3][3] = { {'1','2','3'},{'4','5','6'},{'7','8','9'} };
-bool turno = true;
+// caracteres para representar las celdas del tablero
+char tablero[3][3] = { {'1','2','3'},{'4','5','6'},{'7','8','9'} }; 
 
 bool ValidarNumero(string str)// metodo para comprobar si el dato introducido es entero
 {
@@ -23,7 +23,7 @@ bool ValidarNumero(string str)// metodo para comprobar si el dato introducido es
     return true;
 }
 
-void DesplegarTablero() {
+void DesplegarTablero() { //itera cada elemento del tablero junto con las divisiones
 
     for (int i = 0; i < 3; i++) {
         cout << "  ";
@@ -38,7 +38,7 @@ void DesplegarTablero() {
     }
 }
 
-bool Empate() {
+bool Empate() { //revisa si el juego esta en un caso de empate
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             if (tablero[i][j] != 'O' && tablero[i][j] != 'X') {
@@ -49,8 +49,8 @@ bool Empate() {
     return true;
 }
 
-bool GameOver(char playerChar) {
-    for (int i = 0; i < 3; i++) {
+bool GameOver(char playerChar) { //evalua si el juego ha terminado con un ganador
+    for (int i = 0; i < 3; i++) { //caso para filas y columnas
         if (tablero[i][0] == playerChar && tablero[i][1] == playerChar && tablero[i][2] == playerChar) {
             return true;
         }
@@ -59,6 +59,7 @@ bool GameOver(char playerChar) {
         }
     }
 
+    //caso para las diagonales
     if (tablero[0][0] == playerChar && tablero[1][1] == playerChar && tablero[2][2] == playerChar) {
         return true;
     }
@@ -69,7 +70,7 @@ bool GameOver(char playerChar) {
     return false;
 }
 
-bool Jugada(char playerChar, int position) {
+bool Jugada(char playerChar, int position) { //funcion para ejecutar jugadas en el tablero
     int counter = 1;
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
@@ -124,27 +125,28 @@ int main()
         cout << "Turno de " << currJugador << "(" << jugadorChar << "): ";
         cin >> position;
 
-        if (!ValidarNumero(position)) {
+        if (!ValidarNumero(position)) { //valida que la posicion insertada es un numero
             cout << "Posicion invalida, solo se permiten numeros, intente de nuevo" << endl;
             system("PAUSE");
 
             continue;
         }
-        else if (stoi(position) > 9) {
+        else if (stoi(position) > 9) { //valida que la posicion este entre 1 y 9
             cout << "Posicion fuera de rango, solo se permiten numeros del 1 al 9, intente de nuevo" << endl;
             system("PAUSE");
 
             continue;
         }
 
-        bool jugadaValida = Jugada(jugadorChar, stoi(position));
-        if (!jugadaValida) {
+        bool jugadaValida = Jugada(jugadorChar, stoi(position)); //determina si la jugada es valida
+
+        if (!jugadaValida) { //caso de una jugada invalida
             cout << "Posicion ya ocupada (jugada invalida)" << endl;
             system("PAUSE");
             continue;
         }
 
-        if (GameOver(jugadorChar)) {
+        if (GameOver(jugadorChar)) { //el juego tiene un ganador
             system("CLS");
 
             DesplegarTablero();
@@ -152,7 +154,7 @@ int main()
             break;
         }
 
-        if (Empate()) {
+        if (Empate()) { //el juego termino en un empate
             system("CLS");
             
             DesplegarTablero();
@@ -160,10 +162,11 @@ int main()
             break;
         }
 
-        if (jugadorChar == 'O') jugadorChar = 'X';
+        //pasar al siguiente turno
+        if (jugadorChar == 'O') jugadorChar = 'X'; //cambio de caracter
         else jugadorChar = 'O';
 
-        if (currJugador == jugador1_Name) currJugador = jugador2_Name;
+        if (currJugador == jugador1_Name) currJugador = jugador2_Name; //cambio de jugador
         else currJugador = jugador1_Name;
 
     }
